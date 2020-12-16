@@ -1,0 +1,19 @@
+*vgrin.txt*   Plugin that integrates ag/grin/sgrep/rg/sift with Vim
+
+==============================================================================
+INTRODUCTION                                                            *vgrin*
+
+leStyle quick Sheet with Grin
+
+:Vgrin {pattern}                                                       *:Vgrin*
+
+==============================================================================
+MAPPINGS                                                             *mappings*
+
+,ga
+,gs
+,g[
+,g]
+,gu
+==============================================================================
+vim:tw=78:fo=tcq2:ft=help:norl:
