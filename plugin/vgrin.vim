@@ -1,11 +1,11 @@
-" File: grin.vim
+" File: vgrin.vim
 " Author: Lechee.Lai
 " Version: 1.0
 "
 " Goal:
 "   grin style in ViM
 "
-" Command: :Grin for grep under cursor            ( Alt-' )
+" Command: :Vgrin for grep under cursor            ( Alt-' )
 "          :Vlist for lister and select by ENTER  ( [F11] )
 "
 " Operator:
@@ -34,22 +34,22 @@ let ag = 1
 " "=== S e t  Y o u r  O p t i o n   H e r e  ==="
 
 let grin_mode = 0  " (0/1)
-let g:Grin_Default_Options = ''
+let g:Vgrin_Default_Options = ''
 
 " "=== End of Option ============================"
 
 
 if grin_mode == 1
-    let Grin_Path = 'grin'
+    let Vgrin_Path = 'grin'
 else
-    let	Grin_Path = 'grin --fte'
+    let	Vgrin_Path = 'grin --fte'
 endif
 
 if g:ag == 1
-    let Grin_Path = 'ag --fte'
+    let Vgrin_Path = 'ag --fte'
 endif
 
-"let Grin_Path = 'grin '
+"let Vgrin_Path = 'grin '
 
 " you can use "CTRL-V" for mapping real key in Quote
 if !exists("Vlist_Key")
@@ -57,14 +57,14 @@ if !exists("Vlist_Key")
 endif
 
 " you can use "CTRL-V" for mapping real key in Quote
-if !exists("Grin_Key")
-	let Grin_Key = "<M-'>"
+if !exists("Vgrin_Key")
+	let Vgrin_Key = "<M-'>"
 endif
 
 "============================================================
 
-let Grin_Output = $HOME . '/fte.grp'
-let g:Grin_Shell_Quote_Char = '"'
+let Vgrin_Output = $HOME . '/fte.grp'
+let g:Vgrin_Shell_Quote_Char = '"'
 let g:VGRIN_MASK = '*'
 
 
@@ -76,18 +76,18 @@ if !exists("VGRIN_DIRS")
     endif
 endif
 
-if !exists("Grin_Null_Device")
+if !exists("Vgrin_Null_Device")
     if has("win32") || has("win16") || has("win95")
-	let Grin_Null_Device = 'NUL'
+	let Vgrin_Null_Device = 'NUL'
     else
-	let Grin_Null_Device = '/dev/null'
+	let Vgrin_Null_Device = '/dev/null'
     endif
 endif
 
 
 " Map a key to invoke grep on a word under cursor.
-exe "nnoremap <unique> <silent> " . Grin_Key . " :call <SID>RunGrin()<CR>"
-exe "inoremap <unique> <silent> " . Grin_Key . " <C-O>:call <SID>RunGrin()<CR>"
+exe "nnoremap <unique> <silent> " . Vgrin_Key . " :call <SID>RunVgrin()<CR>"
+exe "inoremap <unique> <silent> " . Vgrin_Key . " <C-O>:call <SID>RunVgrin()<CR>"
 exe "nnoremap <unique> <silent> " . Vlist_Key . " :call <SID>RunVlist()<CR>"
 exe "inoremap <unique> <silent> " . Vlist_Key . " <C-O>:call <SID>RunVlist()<CR>"
 
@@ -103,15 +103,15 @@ function! s:GetDocLocations()
     return dp
 endfunction
 
-function! s:GrinHelp(cmd,args)
+function! s:VgrinHelp(cmd,args)
     let args = a:args.' '.s:GetDocLocations()
-    call s:RunGrin(a:cmd,args)
+    call s:RunVgrin(a:cmd,args)
 endfunction
 
-" DelGrinClrDat()
+" DelVgrinClrDat()
 "
-function! s:RunGrinClrDat()
-    let tmpfile = g:Grin_Output
+function! s:RunVgrinClrDat()
+    let tmpfile = g:Vgrin_Output
     if filereadable(tmpfile)
 	let del_str = 'del ' . tmpfile
 	if (g:ag == 1) || g:grin == 1
@@ -123,9 +123,9 @@ function! s:RunGrinClrDat()
 
 endfunction
 
-" RunGrinCmd()
+" RunVgrinCmd()
 " Run the specified grep command using the supplied pattern
-function! s:RunGrinCmd(cmd, pattern)
+function! s:RunVgrinCmd(cmd, pattern)
 
     let cmd_output = system(a:cmd)
     if cmd_output == ""
@@ -134,7 +134,7 @@ function! s:RunGrinCmd(cmd, pattern)
 		    \ echohl None
 	return
     endif
-    let tmpfile = g:Grin_Output
+    let tmpfile = g:Vgrin_Output
     let old_verbose = &verbose
     set verbose&vim
 
@@ -149,7 +149,7 @@ function! s:EditFile()
     " memory the last location
     exe 'normal ' . 'mZ'
 
-    " =============== Grin/ Semware Grep ===========
+    " =============== Vgrin/ Semware Grep ===========
     if g:grin_mode == 0   " Semware style (fte)
 
 	let chkline = getline('.')
@@ -245,12 +245,12 @@ function! s:EditFile()
 endfunction
 
 
-" RunGrin()
+" RunVgrin()
 " Run the specified grep command
-function! s:RunGrin(...)
+function! s:RunVgrin(...)
     "    if a:0 == 0 || a:1 == ''
-    let grin_opt = g:Grin_Default_Options
-    let grin_path = g:Grin_Path
+    let grin_opt = g:Vgrin_Default_Options
+    let grin_path = g:Vgrin_Path
 
     " No argument supplied. Get the identifier and file list from user
     let pattern = input("grin for pattern: ", expand("<cword>"))
@@ -258,7 +258,7 @@ function! s:RunGrin(...)
 	echo "Cancelled."
 	return
     endif
-    let pattern = g:Grin_Shell_Quote_Char . pattern . g:Grin_Shell_Quote_Char
+    let pattern = g:Vgrin_Shell_Quote_Char . pattern . g:Vgrin_Shell_Quote_Char
 
 "    if g:VGRIN_MASK == "*"
 "	let ff = expand("%:e")
@@ -287,23 +287,23 @@ function! s:RunGrin(...)
     endif
     let g:VGRIN_DIRS = grindir
     if g:grin == 1  || g:ag == 1
-"	let cmd = grin_path . " " . pattern . " " . g:VGRIN_DIRS . " " . mmm . " " . grin_opt . ">" . g:Grin_Output
-	let cmd = grin_path . " " . pattern . " " . mmm . " " . grin_opt . ">" . g:Grin_Output
+"	let cmd = grin_path . " " . pattern . " " . g:VGRIN_DIRS . " " . mmm . " " . grin_opt . ">" . g:Vgrin_Output
+	let cmd = grin_path . " " . pattern . " " . mmm . " " . grin_opt . ">" . g:Vgrin_Output
     endif
     if g:grin == 1 || g:ag == 1
-"	call s:RunGrinClrDat()
-"	call s:RunGrinCmd(cmd, pattern)
+"	call s:RunVgrinClrDat()
+"	call s:RunVgrinCmd(cmd, pattern)
 "    else
 	let last_cd = getcwd()
 	exe 'cd ' . grindir
-	call s:RunGrinClrDat()
-	call s:RunGrinCmd(cmd, pattern)
+	call s:RunVgrinClrDat()
+	call s:RunVgrinCmd(cmd, pattern)
 	exe 'cd ' . last_cd
     endif
 
-    if filereadable(g:Grin_Output)
+    if filereadable(g:Vgrin_Output)
 	setlocal modifiable
-	exe 'edit ' . g:Grin_Output
+	exe 'edit ' . g:Vgrin_Output
 	setlocal nomodifiable
     endif
 
@@ -315,7 +315,7 @@ endfunction
 
 function! s:RunVlist()
     setlocal modifiable
-    exe 'edit ' . g:Grin_Output
+    exe 'edit ' . g:Vgrin_Output
     nnoremap <buffer> <silent> <CR> :call <SID>EditFile()<CR>
     nmap <buffer> <silent> <2-LeftMouse> :call <SID>EditFile()<CR>
     nmap <buffer> <silent> o :call <SID>EditFile()<CR>
@@ -324,8 +324,8 @@ function! s:RunVlist()
 endfunction
 
 " Define the set of grep commands
-command! -nargs=* Grin call s:RunGrin(<q-args>)
+command! -nargs=* Vgrin call s:RunVgrin(<q-args>)
 command! Vlist call s:RunVlist()
-command! -bang -nargs=* -complete=help GrinHelp call s:GrinHelp('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help VgrinHelp call s:VgrinHelp('grep<bang>',<q-args>)
 
 " vim:tabstop=4:sw=4
