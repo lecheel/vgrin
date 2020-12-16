@@ -3,7 +3,7 @@
 ==============================================================================
 INTRODUCTION                                                            *vgrin*
 
-leStyle quick Sheet with Grin
+leStyle quick Sheet with Vgrin
 
 :Vgrin {pattern}                                                       *:Vgrin*
 

@@ -1,6 +1,6 @@
 " File: vgrin.vim
 " Author: Lechee.Lai
-" Version: 1.0
+" Version: 1.1
 "
 " Goal:
 "   grin style in ViM
@@ -24,10 +24,10 @@
 "
 
 
-if exists("loaded_grin") || &cp
+if exists("g:loaded_vgrin") || &cp
     finish
 endif
-let loaded_grin = 1
+let g:loaded_vgrin = 1
 let grin = 0
 let ag = 1
 
@@ -101,11 +101,6 @@ function! s:GetDocLocations()
         endif
     endfor
     return dp
-endfunction
-
-function! s:VgrinHelp(cmd,args)
-    let args = a:args.' '.s:GetDocLocations()
-    call s:RunVgrin(a:cmd,args)
 endfunction
 
 " DelVgrinClrDat()
@@ -326,6 +321,5 @@ endfunction
 " Define the set of grep commands
 command! -nargs=* Vgrin call s:RunVgrin(<q-args>)
 command! Vlist call s:RunVlist()
-command! -bang -nargs=* -complete=help VgrinHelp call s:VgrinHelp('grep<bang>',<q-args>)
 
-" vim:tabstop=4:sw=4
+" vim:set ft=vim sw=4 sts=4 et:
