@@ -69,11 +69,7 @@ let g:VGRIN_MASK = '*'
 
 
 if !exists("VGRIN_DIRS")
-    if $bhome == ""
-	let g:VGRIN_DIRS=getcwd()
-    else
-	let g:VGRIN_DIRS=$bhome
-    endif
+    let g:VGRIN_DIRS=getcwd()
 endif
 
 if !exists("Vgrin_Null_Device")
@@ -90,18 +86,6 @@ exe "nnoremap <unique> <silent> " . Vgrin_Key . " :call <SID>RunVgrin()<CR>"
 exe "inoremap <unique> <silent> " . Vgrin_Key . " <C-O>:call <SID>RunVgrin()<CR>"
 exe "nnoremap <unique> <silent> " . Vlist_Key . " :call <SID>RunVlist()<CR>"
 exe "inoremap <unique> <silent> " . Vlist_Key . " <C-O>:call <SID>RunVlist()<CR>"
-
-
-function! s:GetDocLocations()
-    let dp = ''
-    for p in split(&rtp,',')
-        let p = p.'/doc/'
-        if isdirectory(p)
-            let dp = p.'*.txt '.dp
-        endif
-    endfor
-    return dp
-endfunction
 
 " DelVgrinClrDat()
 "
@@ -124,9 +108,6 @@ function! s:RunVgrinCmd(cmd, pattern)
 
     let cmd_output = system(a:cmd)
     if cmd_output == ""
-	echohl WarningMsg |
-		    \ echomsg "Error: Pattern " . a:pattern . " not found" |
-		    \ echohl None
 	return
     endif
     let tmpfile = g:Vgrin_Output
@@ -246,6 +227,7 @@ function! s:RunVgrin(...)
     "    if a:0 == 0 || a:1 == ''
     let grin_opt = g:Vgrin_Default_Options
     let grin_path = g:Vgrin_Path
+    let ff = "*"
 
     " No argument supplied. Get the identifier and file list from user
     let pattern = input("grin for pattern: ", expand("<cword>"))
@@ -255,36 +237,40 @@ function! s:RunVgrin(...)
     endif
     let pattern = g:Vgrin_Shell_Quote_Char . pattern . g:Vgrin_Shell_Quote_Char
 
-"    if g:VGRIN_MASK == "*"
-"	let ff = expand("%:e")
-"	if ff != ""
-"	    let g:VGRIN_MASK = "*.".ff
-"	endif
-"    endif
-
-    let filenames = input("grin in files (*): ", g:VGRIN_MASK)
-    if filenames == ""
-	echo "Cancelled."
-	return
+    let ff = expand("%:e")
+    if ff != ""
+        let g:VGRIN_MASK = "*.".ff
     endif
-    if filenames == "*"
-	let filenames = ""
-	let mmm=filenames
-    else
-	let mmm = "-I '".filenames."'"
+    
+    if g:grin == 1
+        let filenames = input("grin in files (*): ", g:VGRIN_MASK)
+        if filenames == ""
+            echo "Cancelled."
+            return
+        endif
+        if filenames == "*"
+            let filenames = ""
+            let mmm=filenames
+        else
+            let mmm = "-I '".filenames."'"
+        endif
+        let g:VGRIN_MASK = filenames
     endif
 
-"    let g:VGRIN_MASK = filenames
     let grindir = input("grin dir: ", g:VGRIN_DIRS)
     if grindir == ""
-	echo "Cancelled."
-	return
+        echo "Cancelled."
+        return
     endif
+
     let g:VGRIN_DIRS = grindir
-    if g:grin == 1  || g:ag == 1
-"	let cmd = grin_path . " " . pattern . " " . g:VGRIN_DIRS . " " . mmm . " " . grin_opt . ">" . g:Vgrin_Output
+    if g:grin == 1
 	let cmd = grin_path . " " . pattern . " " . mmm . " " . grin_opt . ">" . g:Vgrin_Output
     endif
+    if g:ag == 1
+	let cmd = grin_path . " " . pattern . " " . grin_opt . ">" . g:Vgrin_Output
+    endif
+
     if g:grin == 1 || g:ag == 1
 "	call s:RunVgrinClrDat()
 "	call s:RunVgrinCmd(cmd, pattern)

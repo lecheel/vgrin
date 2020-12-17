@@ -3,17 +3,48 @@
 ==============================================================================
 INTRODUCTION                                                            *vgrin*
 
-leStyle quick Sheet with Vgrin
+leStyle grep grin/ag/sift/pt
+show result in orginal format instead vimgrep |Quickfix| mode
 
 :Vgrin {pattern}                                                       *:Vgrin*
 
 ==============================================================================
 MAPPINGS                                                             *mappings*
 
-,ga
-,gs
-,g[
-,g]
-,gu
+<A-'>   :Vgrin  -- for grep under cursor 
+<F11>   :Vlist  -- recall the last result
+
+ Operator:
+          <Enter>       EditFile
+          o             EditFile
+          <Esc>         Quit/Close
+ Require:
+	  +viminfo feature must enable
+          Patch ag/grin/pt/sift ... with --fte
+          simply way you can copy over 
+          cp grin.py /usr/local/bin
+
+          bin prebuilt binary is included
+          ├── 16.04    
+          │   ├── aga           https://github.com/lecheel/the_silver_searcher
+          │   └── sift          https://github.com/lecheel/sift
+          ├── 18.04
+          │   ├── ag
+          │   └── sift
+          ├── grin -> grin.py
+          └── grin.py           https://github.com/lecheel/grin
+
+
 ==============================================================================
+WORKFLOW                                                             *workflow*
+
+ 1. grin for pattern: {pattern}
+ 2. grin in files (*): *
+ 3. grin dir: .                     -- . for current directory
+ 
+ Result: <F11>
+
+ File: /home/lecheel/.config/nvim/plugged/vgrin.vim/doc/vgrin.txt
+ 7:show result in orginal format instead vimgrep |Quickfix| mode
+
 vim:tw=78:fo=tcq2:ft=help:norl:
