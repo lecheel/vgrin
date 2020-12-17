@@ -1,7 +1,7 @@
 # vgrin
 grep for grin/sift/ag/pt
 ## Installation ##
-  Plug 'lecheel/vgrin.vim'
+  Plug 'lecheel/vgrin'
 
 ## workflow ##
   1. grin for pattern: {pattern}
